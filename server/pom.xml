@@ -7,6 +7,9 @@
     <groupId>com.icu</groupId>
     <artifactId>cc</artifactId>
     <version>1.0.0</version>
+    <modules>
+        <module>cc-common</module>
+    </modules>
     <packaging>pom</packaging>
 
 

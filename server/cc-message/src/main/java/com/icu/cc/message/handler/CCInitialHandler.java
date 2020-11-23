@@ -1,5 +1,7 @@
 package com.icu.cc.message.handler;
 
+import com.icu.cc.protocol.CCDecoder;
+import com.icu.cc.protocol.CCEncoder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
@@ -10,7 +12,10 @@ public class CCInitialHandler extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel ch) {
-        // todo
+        // todo: 添加自定义处理器
+        ch.pipeline()
+                .addLast("encoder", new CCEncoder())
+                .addLast("decoder", new CCDecoder());
     }
 
 }

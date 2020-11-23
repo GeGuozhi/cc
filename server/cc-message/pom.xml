@@ -59,6 +59,12 @@
             <artifactId>netty-all</artifactId>
             <version>${netty.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.icu</groupId>
+            <artifactId>cc-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
