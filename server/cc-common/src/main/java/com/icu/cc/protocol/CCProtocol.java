@@ -8,6 +8,9 @@ import java.util.Map;
 /**
  *
  * cc 协议格式
+ * --------------------------------------------------------------
+ * | headerFlag | type | headerLength | header | contentLength |
+ * --------------------------------------------------------------
  *
  * Created by yi on 2020/11/23 21:43
  */
@@ -20,11 +23,15 @@ public class CCProtocol {
      */
     private int headerFlag = ProtocolConstant.HEADER_FLAG;
     /**
-     * 消息长度
+     * 消息类型
+     */
+    private int type;
+    /**
+     * 请求头长度
      */
     private int headerLength;
     /**
-     * 消息类型
+     * 消息头参数
      */
     private Map<String, String> header;
     /**

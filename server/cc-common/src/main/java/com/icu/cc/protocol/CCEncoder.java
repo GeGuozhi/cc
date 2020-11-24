@@ -7,13 +7,14 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 /**
  * cc 协议编码器
- * <p>
+ *
  * Created by yi on 2020/11/23 21:48
  */
 public class CCEncoder extends MessageToByteEncoder<CCProtocol> {
 
     protected void encode(ChannelHandlerContext ctx, CCProtocol msg, ByteBuf out) throws Exception {
         out.writeInt(msg.getHeaderFlag());
+        out.writeInt(msg.getType());
         byte[] headerBytes = new byte[0];
         if (!msg.getHeader().isEmpty())
             headerBytes = Joiner.on("\n").withKeyValueSeparator(":").join(msg.getHeader()).getBytes();

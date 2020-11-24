@@ -10,7 +10,7 @@ public class ProtocolConstant {
     /**
      * 协议头占用字节数
      */
-    public final static int HEADER_LEN = 8;
+    public final static int HEADER_LEN = 12;
 
     /**
      * 消息内容长度占用字节数

@@ -1,5 +1,8 @@
 package com.icu.cc.protocol;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 协议类型
  *
@@ -20,7 +23,7 @@ public enum ProtocolTypeEnum {
     /**
      * 消息类型
      */
-    private int type;
+    private final int type;
 
     ProtocolTypeEnum(int type) {
         this.type = type;
@@ -28,6 +31,16 @@ public enum ProtocolTypeEnum {
 
     public int getType() {
         return this.type;
+    }
+
+    private static Map<Integer, String> map = new HashMap<Integer, String>();
+    static {
+        map.put(1, "授权");
+        map.put(2, "文本消息");
+    }
+
+    public static boolean contains(int type) {
+        return map.containsKey(type);
     }
 
 }

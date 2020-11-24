@@ -12,6 +12,9 @@ import java.util.Map;
 import static com.icu.cc.protocol.ProtocolConstant.*;
 
 /**
+ *
+ * cc协议 解码器
+ *
  * Created by yi on 2020/11/23 21:52
  */
 public class CCDecoder extends ByteToMessageDecoder {
@@ -21,6 +24,12 @@ public class CCDecoder extends ByteToMessageDecoder {
         if (in.readableBytes() < HEADER_LEN) {
             return;
         } else if (in.readInt() != HEADER_FLAG) {
+            return;
+        }
+
+        // 解析消息类型
+        int type = in.readInt();
+        if (!ProtocolTypeEnum.contains(type)) {
             return;
         }
 
@@ -56,6 +65,7 @@ public class CCDecoder extends ByteToMessageDecoder {
 
         // 组装协议信息
         out.add(new CCProtocol()
+                .setType(type)
                 .setHeaderLength(headerLen)
                 .setHeader(header)
                 .setContentLength(contentLen)
