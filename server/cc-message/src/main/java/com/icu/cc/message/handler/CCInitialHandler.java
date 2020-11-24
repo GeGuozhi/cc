@@ -12,10 +12,10 @@ public class CCInitialHandler extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel ch) {
-        // todo: 添加自定义处理器
         ch.pipeline()
                 .addLast("encoder", new CCEncoder())
-                .addLast("decoder", new CCDecoder());
+                .addLast("decoder", new CCDecoder())
+                .addLast("ccHandler", new MessageHandler());
     }
 
 }
