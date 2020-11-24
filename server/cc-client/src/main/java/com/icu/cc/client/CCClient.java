@@ -1,7 +1,9 @@
 package com.icu.cc.client;
 
+import com.icu.cc.client.config.ClientContext;
 import com.icu.cc.client.handler.MessageHandler;
 import com.icu.cc.common.exception.CCException;
+import com.icu.cc.common.handler.CCHandler;
 import com.icu.cc.common.protocol.CCDecoder;
 import com.icu.cc.common.protocol.CCEncoder;
 import com.icu.cc.common.protocol.CCProtocol;
@@ -80,6 +82,16 @@ public class CCClient implements AutoCloseable {
         } finally {
             worker.shutdownGracefully();
         }
+    }
+
+    /**
+     * 添加处理器
+     *
+     * @param type    消息类型
+     * @param handler 处理器
+     */
+    public void addHandler(int type, CCHandler handler) {
+        ClientContext.handlers.put(type, handler);
     }
 
     public static void main(String[] args) {

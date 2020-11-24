@@ -29,6 +29,6 @@ public class MessageHandler extends SimpleChannelInboundHandler<CCProtocol> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.channel().close();
-        log.error("链接异常，错误描述 => ", cause);
+        log.error("链接异常，错误描述 => {}", cause.getMessage());
     }
 }
