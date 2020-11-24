@@ -1,4 +1,4 @@
-package com.icu.cc.protocol;
+package com.icu.cc.common.protocol;
 
 import com.google.common.base.Joiner;
 import io.netty.buffer.ByteBuf;
@@ -16,12 +16,12 @@ public class CCEncoder extends MessageToByteEncoder<CCProtocol> {
         out.writeInt(msg.getHeaderFlag());
         out.writeInt(msg.getType());
         byte[] headerBytes = new byte[0];
-        if (!msg.getHeader().isEmpty())
+        if (msg.getHeader() != null && !msg.getHeader().isEmpty())
             headerBytes = Joiner.on("\n").withKeyValueSeparator(":").join(msg.getHeader()).getBytes();
         out.writeInt(headerBytes.length);
         if (headerBytes.length > 0) out.writeBytes(headerBytes);
-        out.writeLong(msg.getContent().length);
-        out.writeBytes(msg.getContent());
+        out.writeInt(msg.getContent().length);
+        if (msg.getContent() != null && msg.getContent().length > 0) out.writeBytes(msg.getContent());
     }
 
 }

@@ -15,9 +15,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 /**
- *
  * 消息推送服务启动类
- *
+ * <p>
  * Created by yi on 2020/11/17 23:02
  */
 @Component
@@ -33,15 +32,14 @@ public class BootstrapRunner implements ApplicationRunner {
         EventLoopGroup worker = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
-            b.group(boss, worker);
-            b.channel(NioServerSocketChannel.class);
-            b.childOption(ChannelOption.SO_BACKLOG, 1025);
-            b.childOption(ChannelOption.SO_KEEPALIVE, true);
-            b.childHandler(new CCInitialHandler());
+            b.group(boss, worker)
+                    .channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG, 1024)
+                    .childHandler(new CCInitialHandler());
 
             ChannelFuture future = b.bind(propertyConfig.nettyPort).sync();
 
-            log.info("服务启动完成");
+            log.info("消息推送服务启动成功");
             future.channel().closeFuture().sync();
         } finally {
             boss.shutdownGracefully();

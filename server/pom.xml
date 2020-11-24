@@ -9,6 +9,7 @@
     <version>1.0.0</version>
     <modules>
         <module>cc-common</module>
+        <module>cc-client</module>
     </modules>
     <packaging>pom</packaging>
 

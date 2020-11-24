@@ -1,4 +1,4 @@
-package com.icu.cc.exception;
+package com.icu.cc.common.exception;
 
 public class CCException extends RuntimeException {
 

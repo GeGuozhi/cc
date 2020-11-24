@@ -1,4 +1,4 @@
-package com.icu.cc.protocol;
+package com.icu.cc.common.protocol;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
@@ -8,8 +8,6 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 import java.util.Map;
-
-import static com.icu.cc.protocol.ProtocolConstant.*;
 
 /**
  *
@@ -21,15 +19,15 @@ public class CCDecoder extends ByteToMessageDecoder {
 
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         // 处理协议头
-        if (in.readableBytes() < HEADER_LEN) {
+        if (in.readableBytes() < ProtocolConstant.HEADER_LEN) {
             return;
-        } else if (in.readInt() != HEADER_FLAG) {
+        } else if (in.readInt() != ProtocolConstant.HEADER_FLAG) {
             return;
         }
 
         // 解析消息类型
         int type = in.readInt();
-        if (!ProtocolTypeEnum.contains(type)) {
+        if (!MessageTypeEnum.contains(type)) {
             return;
         }
 
@@ -48,7 +46,7 @@ public class CCDecoder extends ByteToMessageDecoder {
         }
 
         // 处理消息内容
-        if (in.readableBytes() < CONTENT_LEN) {
+        if (in.readableBytes() < ProtocolConstant.CONTENT_LEN) {
             in.resetReaderIndex();
             return;
         }
@@ -64,8 +62,7 @@ public class CCDecoder extends ByteToMessageDecoder {
         }
 
         // 组装协议信息
-        out.add(new CCProtocol()
-                .setType(type)
+        out.add(new CCProtocol(type)
                 .setHeaderLength(headerLen)
                 .setHeader(header)
                 .setContentLength(contentLen)

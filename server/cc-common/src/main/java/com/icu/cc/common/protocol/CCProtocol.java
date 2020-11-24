@@ -1,4 +1,4 @@
-package com.icu.cc.protocol;
+package com.icu.cc.common.protocol;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -37,10 +37,14 @@ public class CCProtocol {
     /**
      * 消息内容长度
      */
-    private long contentLength;
+    private int contentLength;
     /**
      * 消息内容
      */
     private byte[] content;
+
+    public CCProtocol(int type) {
+        this.type = type;
+    }
 
 }

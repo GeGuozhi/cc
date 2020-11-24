@@ -1,4 +1,4 @@
-package com.icu.cc.protocol;
+package com.icu.cc.common.protocol;
 
 /**
  * 协议中的一些常量
