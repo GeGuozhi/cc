@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.icu.cc.client.config.ClientContext;
 import com.icu.cc.client.handler.MessageHandler;
 import com.icu.cc.common.constants.CommonHeader;
+import com.icu.cc.common.constants.StrMessageTypeEnum;
 import com.icu.cc.common.exception.CCException;
 import com.icu.cc.common.handler.CCHandler;
 import com.icu.cc.common.protocol.CCDecoder;
@@ -19,7 +20,6 @@ import io.netty.util.concurrent.DefaultThreadFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 客户端相关操作
@@ -83,8 +83,9 @@ public class CCClient implements AutoCloseable {
      */
     public void sendSingleStrMessage(String message, String from, String to) {
         Map<String, String> header = Maps.newHashMap();
-        header.put("from", from);
-        header.put("to", to);
+        header.put(CommonHeader.TYPE, StrMessageTypeEnum.SINGLE.getType().toString());
+        header.put(CommonHeader.FROM, from);
+        header.put(CommonHeader.TO, to);
         CCProtocol ccMessage = new CCProtocol(MessageTypeEnum.STR_MESSAGE.getType())
                 .setHeader(header)
                 .setContent(message.getBytes());
@@ -97,7 +98,8 @@ public class CCClient implements AutoCloseable {
      */
     public void sendBroadcastStrMessage(String message, String from) {
         Map<String, String> header = Maps.newHashMap();
-        header.put("from", from);
+        header.put(CommonHeader.TYPE, StrMessageTypeEnum.BROADCAST.getType().toString());
+        header.put(CommonHeader.FROM, from);
         CCProtocol ccMessage = new CCProtocol(MessageTypeEnum.STR_MESSAGE.getType())
                 .setHeader(header)
                 .setContent(message.getBytes());

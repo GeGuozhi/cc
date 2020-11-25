@@ -20,8 +20,12 @@ public class CCEncoder extends MessageToByteEncoder<CCProtocol> {
             headerBytes = Joiner.on("\n").withKeyValueSeparator(":").join(msg.getHeader()).getBytes();
         out.writeInt(headerBytes.length);
         if (headerBytes.length > 0) out.writeBytes(headerBytes);
-        out.writeInt(msg.getContent().length);
-        if (msg.getContent() != null && msg.getContent().length > 0) out.writeBytes(msg.getContent());
+        if (msg.getContent() != null && msg.getContent().length > 0) {
+            out.writeInt(msg.getContent().length);
+            out.writeBytes(msg.getContent());
+        } else {
+            out.writeInt(0);
+        }
     }
 
 }

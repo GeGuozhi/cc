@@ -9,14 +9,14 @@ public enum StrMessageTypeEnum {
     BROADCAST(3, "群发")
     ;
 
-    private int type;
+    private Integer type;
     private String desc;
     StrMessageTypeEnum(int type, String desc) {
         this.type = type;
         this.desc = desc;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 }

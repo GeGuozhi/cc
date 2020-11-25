@@ -24,7 +24,7 @@ public class MainActivity extends JFrame {
 
     public MainActivity() {
         super("cc");
-        setSize(500, 500);
+        setSize(700, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loadLayout();
         loadCCClient();
@@ -82,9 +82,9 @@ public class MainActivity extends JFrame {
         Map<String, String> header = msg.getHeader();
         String from = header.get(CommonHeader.FROM);
         if (from != null) {
-            msgTextArea.setText(msgTextArea.getText() + "收到来自于" + from + "的消息" + new String(msg.getContent()) + "\n");
+            msgTextArea.setText(msgTextArea.getText() + "received by: " + from + "：" + new String(msg.getContent()) + "\n");
         } else {
-            msgTextArea.setText(msgTextArea.getText() + "收到消息" + new String(msg.getContent()) + "\n");
+            msgTextArea.setText(msgTextArea.getText() + "received msg：" + new String(msg.getContent()) + "\n");
         }
     };
 

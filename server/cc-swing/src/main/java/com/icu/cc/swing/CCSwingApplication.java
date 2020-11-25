@@ -15,7 +15,7 @@ import java.util.Enumeration;
 public class CCSwingApplication {
 
     public static void main(String[] args) {
-        initGlobalFont(new Font("alias", Font.PLAIN, 24));
+        initGlobalFont(new Font("alias", Font.PLAIN, 14));
         new MainActivity();
     }
 
