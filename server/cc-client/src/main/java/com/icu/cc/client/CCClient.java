@@ -1,7 +1,9 @@
 package com.icu.cc.client;
 
+import com.google.common.collect.Maps;
 import com.icu.cc.client.config.ClientContext;
 import com.icu.cc.client.handler.MessageHandler;
+import com.icu.cc.common.constants.CommonHeader;
 import com.icu.cc.common.exception.CCException;
 import com.icu.cc.common.handler.CCHandler;
 import com.icu.cc.common.protocol.CCDecoder;
@@ -16,6 +18,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,7 +41,10 @@ public class CCClient implements AutoCloseable {
     /**
      * 初始化客户端
      */
-    public void init() {
+    public void init(String id) {
+        if (ip == null || port == null) throw new CCException("Ip / PORT Missing.");
+        else if (id == null || "".equals(id)) throw new CCException("ID Missing.");
+
         try {
             Bootstrap b = new Bootstrap();
             b.group(worker)
@@ -54,6 +60,7 @@ public class CCClient implements AutoCloseable {
 
             final ChannelFuture cf = b.connect(ip, port).sync();
             channel = cf.channel();
+            login(id);
         } catch (InterruptedException e) {
             log.error("启动失败");
             throw new CCException("启动失败");
@@ -61,12 +68,39 @@ public class CCClient implements AutoCloseable {
     }
 
     /**
+     * 登录
+     */
+    private void login(String id) {
+        Map<String, String> header = Maps.newHashMap();
+        header.put(CommonHeader.FROM, id);
+        channel.writeAndFlush(new CCProtocol(MessageTypeEnum.AUTH.getType()).setHeader(header));
+    }
+
+    /**
      * 发送文本消息
      *
      * @param message 消息内容
      */
-    public void sendMessage(String message) {
-        CCProtocol ccMessage = new CCProtocol(MessageTypeEnum.STR_MESSAGE.getType()).setContent(message.getBytes());
+    public void sendSingleStrMessage(String message, String from, String to) {
+        Map<String, String> header = Maps.newHashMap();
+        header.put("from", from);
+        header.put("to", to);
+        CCProtocol ccMessage = new CCProtocol(MessageTypeEnum.STR_MESSAGE.getType())
+                .setHeader(header)
+                .setContent(message.getBytes());
+        channel.writeAndFlush(ccMessage);
+        log.info("发送完成");
+    }
+
+    /**
+     * 广告消息
+     */
+    public void sendBroadcastStrMessage(String message, String from) {
+        Map<String, String> header = Maps.newHashMap();
+        header.put("from", from);
+        CCProtocol ccMessage = new CCProtocol(MessageTypeEnum.STR_MESSAGE.getType())
+                .setHeader(header)
+                .setContent(message.getBytes());
         channel.writeAndFlush(ccMessage);
         log.info("发送完成");
     }
@@ -94,15 +128,4 @@ public class CCClient implements AutoCloseable {
         ClientContext.handlers.put(type, handler);
     }
 
-    public static void main(String[] args) {
-        try (CCClient client = new CCClient("localhost", 8081)) {
-            client.init();
-            log.info("client start...");
-            client.sendMessage("hi~");
-            TimeUnit.SECONDS.sleep(10);
-            log.info("client end...");
-        } catch (InterruptedException e) {
-            log.error("", e);
-        }
-    }
 }

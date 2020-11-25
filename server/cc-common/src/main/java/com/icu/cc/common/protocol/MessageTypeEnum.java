@@ -17,7 +17,7 @@ public enum MessageTypeEnum {
     /**
      * 消息类型
      */
-    private final int type;
+    private final Integer type;
     private final String desc;
 
     MessageTypeEnum(int type, String desc) {
@@ -25,7 +25,7 @@ public enum MessageTypeEnum {
         this.desc = desc;
     }
 
-    public int getType() {
+    public Integer getType() {
         return this.type;
     }
 
