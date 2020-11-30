@@ -19,6 +19,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import lombok.extern.slf4j.Slf4j;
 
+import java.net.InetSocketAddress;
 import java.util.Map;
 
 /**
@@ -29,12 +30,12 @@ public class CCClient implements AutoCloseable {
 
     public static Channel channel;
 
-    private final String ip;
+    private final String hostname;
     private final Integer port;
     private final EventLoopGroup worker = new NioEventLoopGroup(2, new DefaultThreadFactory("cc-worker"));
 
-    public CCClient(String ip, Integer port) {
-        this.ip = ip;
+    public CCClient(String hostname, Integer port) {
+        this.hostname = hostname;
         this.port = port;
     }
 
@@ -42,7 +43,7 @@ public class CCClient implements AutoCloseable {
      * 初始化客户端
      */
     public void init(String id) {
-        if (ip == null || port == null) throw new CCException("Ip / PORT Missing.");
+        if (hostname == null || port == null) throw new CCException("Ip / PORT Missing.");
         else if (id == null || "".equals(id)) throw new CCException("ID Missing.");
 
         try {
@@ -58,7 +59,7 @@ public class CCClient implements AutoCloseable {
                         }
                     });
 
-            final ChannelFuture cf = b.connect(ip, port).sync();
+            final ChannelFuture cf = b.connect(new InetSocketAddress(hostname, port)).sync();
             channel = cf.channel();
             login(id);
         } catch (InterruptedException e) {
