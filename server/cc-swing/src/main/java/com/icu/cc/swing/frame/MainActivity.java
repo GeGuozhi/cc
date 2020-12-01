@@ -92,7 +92,7 @@ public class MainActivity extends JFrame {
      */
     private void loadCCClient() {
         try {
-            client = new CCClient("utools.club", 36140);
+            client = new CCClient("47.111.77.75", 9000);
             client.init(userNameField.getText());
             client.addHandler(MessageTypeEnum.STR_MESSAGE.getType(), strMessageHandler);
         } catch (Exception e) {
